@@ -108,6 +108,7 @@ import {
   ValidationError,
 } from '../backend/errors';
 import { getResults } from '../backend/persistence';
+import { expectLoggedError } from './helpers/expectLoggedError';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -342,6 +343,7 @@ describe('backend/server.ts — health check HTTP server', () => {
     });
 
     it('returns 500 when persistence throws an error', () => {
+      expectLoggedError(/Failed to read persisted results/);
       vi.mocked(getResults).mockImplementationOnce(() => {
         throw new Error('db down');
       });
